@@ -133,8 +133,8 @@ matching error the source raises for another reason.
 * `molebox_extract.py`, `bsc_split.py`, `patch_speakeasy.py`: unpacking. `unpack_emu.py` is a simpler
   unpacker that only dumps the memory image.
 * `typelibs.json` and `tlbdump.py`: the type library dump used to name COM members.
-  `python tlbdump.py typelibs.json` regenerates it with the type libraries of every app in the library
-  (needs comtypes, the 32-bit system DLLs, and `untrusted_vb6olb/VB6.OLB`, a copy of the VB6 type
-  library downloaded from the semi-vb-decompiler project).
+  `python tlbdump.py typelibs.json` regenerates it with the type libraries of every app in the library.
+  It needs comtypes, the 32-bit system DLLs, and Microsoft's VB6 type library, `VB6.OLB`, which is not
+  included: `documentation.md`, section 11, says where to get it. Using the tools does not need it.
 * `vbinfo.py`, `vbdis.py`, `disraw.py`: quick VB header and disassembly viewers.
 * `lib/`, `emu/`: installed Python packages (not in git).

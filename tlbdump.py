@@ -132,8 +132,11 @@ if __name__ == '__main__':
     for proj in chosen:
         extra += [t for t in proj.data.get('type_libraries', []) if t not in extra]
     extra += args
-    libs = [r'C:\Windows\SysWOW64\msvbvm60.dll', r'C:\Windows\SysWOW64\msvbvm60.dll\3',
-            os.path.join(os.path.dirname(os.path.abspath(__file__)), 'untrusted_vb6olb', 'VB6.OLB')] + \
+    olb = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'untrusted_vb6olb', 'VB6.OLB')
+    if not os.path.isfile(olb):
+        raise SystemExit('%s is missing. It is not part of the repository; documentation.md, section 11, '
+                         'says where to get it.' % olb)
+    libs = [r'C:\Windows\SysWOW64\msvbvm60.dll', r'C:\Windows\SysWOW64\msvbvm60.dll\3', olb] + \
         extra + [r'C:\Windows\SysWOW64\stdole2.tlb']
     allx = [dump_lib(p) for p in libs]
     json.dump(allx, open(sys.argv[1], 'w'), indent=0)

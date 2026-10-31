@@ -579,8 +579,9 @@ The app's notes describe its sorter.
 DirectX, VB and other objects from vtable offsets, and both decompiler and checker use it for parameter
 types. It is shared by the whole library.
 
-To regenerate it (needs comtypes, the 32-bit system DLLs, and `untrusted_vb6olb/VB6.OLB`, a copy of the
-VB6 type library from the semi-vb-decompiler project):
+`typelibs.json` is part of the repository, so decompiling and checking never need the libraries
+themselves. Regenerating it does: it needs comtypes, the 32-bit system DLLs, and `VB6.OLB` (below).
+Then run:
 
 ```
 python tlbdump.py typelibs.json
@@ -589,6 +590,25 @@ python tlbdump.py typelibs.json
 The VB6 runtime, VB6.OLB (forms and controls) and OLE Automation are always included, plus the
 `type_libraries` of every app in the library. `--project NAME` takes only that app's instead.
 Paths of more libraries can follow on the command line.
+
+### Getting VB6.OLB
+
+`VB6.OLB` is Microsoft's type library for Visual Basic 6 forms and controls. It is Microsoft's file, so
+it is not included here. Put a copy at `untrusted_vb6olb/VB6.OLB`; that folder is listed in
+`.gitignore`. Either of these works:
+
+* From a Visual Basic 6 installation: it is in the `VB98` folder, usually
+  `C:\Program Files (x86)\Microsoft Visual Studio\VB98\VB6.OLB`.
+* From the Semi VB Decompiler project on GitHub, which includes it as
+  `Semi VB Decompiler/data/VB6.OLB`:
+
+  ```
+  curl -L --create-dirs -o untrusted_vb6olb/VB6.OLB "https://github.com/VBGAMER45/Semi-VB-Decompiler/raw/master/Semi%20VB%20Decompiler/data/VB6.OLB"
+  ```
+
+`typelibs.json` matches the copy of 295,514 bytes with this SHA-256 checksum:
+4109ee488c9e930f8884280526b4c36ffc7cee03329cac6a9b8f5864b15c8453. To check yours:
+`certutil -hashfile untrusted_vb6olb/VB6.OLB SHA256`.
 
 
 ## 12. Tips and pitfalls
@@ -674,6 +694,7 @@ Paths of more libraries can follow on the command line.
   * `world.py`: the scripted world.
   * `machine.py`, `mxmem.py` and `mxruntime.py`: the emulated machine and its model of the VB runtime
     functions.
-* `typelibs.json`, `tlbdump.py`, `untrusted_vb6olb/`: type libraries.
+* `typelibs.json`, `tlbdump.py`: type libraries. `untrusted_vb6olb/` is where your copy of `VB6.OLB`
+  goes (not in git; section 11).
 * `vbinfo.py`, `vbdis.py`, `disraw.py`: quick viewers.
 * `lib/`, `emu/`: installed Python packages (not in git). `emu` holds Speakeasy and Unicorn.

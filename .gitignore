@@ -6,6 +6,10 @@ __pycache__/
 lib/
 emu/
 
+# VB6.OLB, Microsoft's VB6 type library: needed only to regenerate typelibs.json, and not ours to share
+# (documentation.md, section 11, says where to get it).
+untrusted_vb6olb/
+
 # In each app, only the project folder (settings and notes) is in git: not your copy of the programs,
 # nor anything the tools make from them.
 apps/*/compiled/
