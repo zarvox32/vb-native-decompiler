@@ -1,0 +1,18 @@
+# Python bytecode
+__pycache__/
+*.pyc
+
+# Installed packages (see README.md, "Setup"); they can be reinstalled at any time.
+lib/
+emu/
+
+# In each app, only the project folder (settings and notes) is in git: not your copy of the programs,
+# nor anything the tools make from them.
+apps/*/compiled/
+apps/*/source/
+apps/*/work/
+
+# Development scratch
+work/*
+!work/dev_patches/
+!work/*.py

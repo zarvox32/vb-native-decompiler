@@ -1,0 +1,234 @@
+{
+  "name": "Troopanum",
+  "about": [
+    "Troopanum: settings for decompiling the five versions of the game (1.5, 1.6, SP 1.6, Classic and 2.0). Notes on how to do it are in README.md next to this file."
+  ],
+  "documents": [
+    "troopanum.txt",
+    "stats.txt"
+  ],
+  "skip_sound_files": [
+    "troop2_review.mp3"
+  ],
+  "sound_sorter": "project/sounds.py",
+  "vbp_references": [
+    "Reference=*\\G{E1211242-8E94-11D1-8808-00C04FC2C603}#1.0#0#dx8vb.dll#DirectX 8 for Visual Basic Type Library"
+  ],
+  "type_libraries": [
+    "C:\\Windows\\SysWOW64\\dx8vb.dll",
+    "C:\\Windows\\SysWOW64\\msinet.ocx",
+    "C:\\Windows\\SysWOW64\\SerialCode.ocx"
+  ],
+  "checker": {
+    "app_path": "C:\\TROOP",
+    "files": {
+      "highscor.dat": "10000,1\r\n9000,2\r\n8000,3\r\n7000,4\r\n6000,5\r\n5000,6\r\n4000,7\r\n3000,8\r\n2000,9\r\n1000,10\r\n",
+      "options.dat": "#TRUE#\r\n#FALSE#\r\n",
+      "stats.txt": "No Statistics Available\r\n",
+      "speaker setting.dat": "n\r\n"
+    },
+    "strings": [
+      "game",
+      "menu",
+      "play sound",
+      "normal",
+      "speed",
+      "bonus1"
+    ]
+  },
+  "omission_rules": [
+    {
+      "label": "licensing / registration",
+      "controls": [
+        "sc"
+      ],
+      "patterns": [
+        "licen[cs]e",
+        "^Error 1[0-9]{3} ",
+        "evaluation period",
+        "diskette",
+        "register\\.wav$",
+        "msdcazs32",
+        "mstrbscom32",
+        "unlock code",
+        "product id"
+      ],
+      "whole_module": true
+    },
+    {
+      "label": "online score posting",
+      "controls": [
+        "inet"
+      ],
+      "apis": [
+        "InternetGetConnectedState"
+      ],
+      "patterns": [
+        "^https?://",
+        "\\.asp(\\?|$)",
+        "^&?User(Name|Email|Country|Score|NameVarify)=",
+        "^&?(GameID|TransID|GameDifficulty|GameLevel)=",
+        "update_\\w*scores",
+        "sending score",
+        "error ?sending",
+        "check connected",
+        "say not enough",
+        "you made it",
+        "^321troop456$",
+        "^1998troop2"
+      ],
+      "strong": [
+        "^https?://",
+        "\\.asp(\\?|$)"
+      ]
+    },
+    {
+      "label": "configuration (config.dat)",
+      "patterns": [
+        "^\\\\config\\.dat$",
+        "say config first"
+      ]
+    }
+  ],
+  "omission_reason": "not needed for the port",
+  "omission_note": [
+    "Variables that only omitted code assigns are marked in their declaration. For example the",
+    "\"registered\" flag set by the licensing code: treat the game as registered (full version)."
+  ],
+  "games": {
+    "Classic Troopanum": {
+      "exe": "Classic Troopanum/troop.exe",
+      "image": "work/classic_box/image.bin",
+      "sounds": [
+        "work/classic_box/files"
+      ],
+      "label": "troop.exe (MoleBox-packed; decompiled from its unpacked in-memory image)",
+      "note": "Classic Troopanum's game code is byte-identical to Troopanum 1.6's troop.exe; the 2011 re-release only repackaged it with MoleBox and moved the sounds into cltr02.bsc.",
+      "omissions": {
+        "procedures": {
+          "Proc_41FD90": "online score posting",
+          "Proc_4271A0": "configuration (config.dat)",
+          "Proc_42BA80": "licensing / registration",
+          "Proc_42C8A0": "licensing / registration",
+          "Proc_42CA00": "licensing / registration"
+        },
+        "parts": {
+          "Form_Load": {
+            "configuration (config.dat)": 1,
+            "licensing / registration": 1
+          },
+          "Proc_41E610": {
+            "licensing / registration": 1,
+            "online score posting": 1
+          },
+          "Proc_425300": {
+            "licensing / registration": 1
+          }
+        }
+      }
+    },
+    "Troopanum 1.5": {
+      "exe": "Troopanum 1.5/troop.exe",
+      "omissions": {
+        "procedures": {
+          "Proc_420DE0": "online score posting",
+          "Proc_428590": "configuration (config.dat)",
+          "Proc_42CB20": "licensing / registration",
+          "Proc_42D940": "licensing / registration",
+          "Proc_42DAA0": "licensing / registration"
+        },
+        "parts": {
+          "Form_Load": {
+            "configuration (config.dat)": 1,
+            "licensing / registration": 1
+          },
+          "Proc_41F730": {
+            "licensing / registration": 1,
+            "online score posting": 1
+          },
+          "Proc_426670": {
+            "licensing / registration": 1
+          }
+        }
+      }
+    },
+    "Troopanum 1.6": {
+      "exe": "Troopanum 1.6/troop.exe",
+      "omissions": {
+        "procedures": {
+          "Proc_41FD90": "online score posting",
+          "Proc_4271A0": "configuration (config.dat)",
+          "Proc_42BA80": "licensing / registration",
+          "Proc_42C8A0": "licensing / registration",
+          "Proc_42CA00": "licensing / registration"
+        },
+        "parts": {
+          "Form_Load": {
+            "configuration (config.dat)": 1,
+            "licensing / registration": 1
+          },
+          "Proc_41E610": {
+            "licensing / registration": 1,
+            "online score posting": 1
+          },
+          "Proc_425300": {
+            "licensing / registration": 1
+          }
+        }
+      }
+    },
+    "Troopanum SP 1.6": {
+      "exe": "Troopanum SP 1.6/troop.exe",
+      "omissions": {
+        "procedures": {
+          "Proc_41FEC0": "online score posting",
+          "Proc_427390": "configuration (config.dat)",
+          "Proc_42C390": "licensing / registration",
+          "Proc_42D230": "licensing / registration",
+          "Proc_42D390": "licensing / registration"
+        },
+        "parts": {
+          "Form_Load": {
+            "configuration (config.dat)": 1,
+            "licensing / registration": 1
+          },
+          "Proc_41E740": {
+            "licensing / registration": 1,
+            "online score posting": 1
+          },
+          "Proc_4254F0": {
+            "licensing / registration": 1
+          }
+        }
+      }
+    },
+    "Troopanum 2.0": {
+      "exe": "Troopanum 2.0/troop.exe",
+      "image": "work/tr20_box/image.bin",
+      "sounds": [
+        "work/tr20_box/files"
+      ],
+      "label": "troop.exe (MoleBox-packed; decompiled from its unpacked in-memory image)",
+      "note": "The sounds were packed in tr20.bsc (MoleBox); the code loads them by file name.",
+      "omissions": {
+        "procedures": {
+          "Proc_4245C0": "online score posting",
+          "Proc_42CBE0": "configuration (config.dat)",
+          "Proc_43DD30": "licensing / registration",
+          "Proc_43EB40": "licensing / registration",
+          "Proc_43ECA0": "licensing / registration",
+          "Proc_43EF20": "online score posting"
+        },
+        "parts": {
+          "Form_Load": {
+            "configuration (config.dat)": 1,
+            "licensing / registration": 1
+          },
+          "Proc_422C70": {
+            "online score posting": 1
+          }
+        }
+      }
+    }
+  }
+}
