@@ -11,8 +11,3 @@ emu/
 apps/*/compiled/
 apps/*/source/
 apps/*/work/
-
-# Development scratch
-work/*
-!work/dev_patches/
-!work/*.py

@@ -138,5 +138,3 @@ matching error the source raises for another reason.
   library downloaded from the semi-vb-decompiler project).
 * `vbinfo.py`, `vbdis.py`, `disraw.py`: quick VB header and disassembly viewers.
 * `lib/`, `emu/`: installed Python packages (not in git).
-* `work/`: development scratch (not in git, except `work/dev_patches` and the `.py` files directly in
-  `work`).

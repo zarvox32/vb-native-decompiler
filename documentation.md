@@ -677,5 +677,3 @@ Paths of more libraries can follow on the command line.
 * `typelibs.json`, `tlbdump.py`, `untrusted_vb6olb/`: type libraries.
 * `vbinfo.py`, `vbdis.py`, `disraw.py`: quick viewers.
 * `lib/`, `emu/`: installed Python packages (not in git). `emu` holds Speakeasy and Unicorn.
-* `work/`: development scratch (not in git, except `work/dev_patches` and the `.py` files directly in
-  `work`).
