@@ -12,7 +12,7 @@ Everything for Troopanum is in `apps/troopanum`:
   * `README.md`: these notes.
 * `utils`: in git.
   * `tr20_soundmod.py`: builds a Troopanum 2.0 sound archive with your own sounds (see "Modding the
-    sounds of 2.0" below).
+    sounds of 2.0" below), and `tr20_soundmod.exe`, the same program built to run without Python.
 * `compiled`: your copy of the games.
 * `work`: the unpacked images and the files extracted from the archives.
 * `source`: the decompiled source.
@@ -274,23 +274,35 @@ are, so running 1.5, 1.6 or SP 1.6 from the source needs them decoded to WAV fir
 ## Modding the sounds of 2.0
 
 `utils/tr20_soundmod.py` builds a new `tr20.bsc` for the original Troopanum 2.0, with your own sounds
-in place of some of the originals. The game itself is not changed.
+in place of some of the originals. `troop.exe` itself is not changed.
 
-1. Make a folder for the mod, anywhere, and put your WAV files in it, named like the game's sounds
+The script needs nothing but Python 3, and `utils/tr20_soundmod.exe` is the same program for players
+without Python, so either can be used without this repository.
+
+1. Copy `tr20_soundmod.exe` (or the script) into the Troopanum 2.0 folder, alongside `tr20.bsc` and
+   `troop.exe`. It stops if there is no `tr20.bsc` next to it.
+2. Make a folder called `soundmod` there and put your WAV files in it, named like the game's sounds
    (`ship1.wav`, `enemy hit1.wav`...). Subfolders are fine, so a copy of
    `apps/troopanum/source/Troopanum 2.0/sounds` with some files replaced works, and its
    `_description.txt` files say what each sound is. Upper or lower case does not matter.
-2. Run the script, and give it the folder when it asks (or put the folder on the command line):
+3. Double-click `tr20_soundmod.exe`, or run the script in the Troopanum 2.0 folder:
 
    ```
-   python -I apps/troopanum/utils/tr20_soundmod.py
+   python -I tr20_soundmod.py
    ```
 
-3. It writes `tr20.bsc` into the mod folder. Put that in the game's folder in place of the original.
+   It uses the `soundmod` folder next to it. If there is none, it asks for the path of the mod folder
+   (a folder on the command line is used instead of either).
+4. It lists the sounds it will replace and asks where the new `tr20.bsc` goes. Answer `1`, `2` or `3`:
+   1. overwrite the game's `tr20.bsc`;
+   2. overwrite the game's `tr20.bsc`, and keep a copy in the mod folder;
+   3. do not overwrite the game's `tr20.bsc`, only store the new one in the mod folder (to play it, put
+      it in the game's folder in place of the original yourself).
 
-Every sound the mod does not have is copied from the original `tr20.bsc`, which the script reads from
-`apps/troopanum/compiled/Troopanum 2.0` (`--original` gives another path). It only reads it. The
-build takes a second or so.
+Every sound the mod does not have is copied from the game's `tr20.bsc`. With `2`, the copy in the mod
+folder is written first and the game's file last, so if the game's file cannot be replaced (the game
+is running, or Windows denies access to its folder), it is left as it was. The build takes a second
+or so. When the program has a window of its own (double-clicked), it waits for Enter before closing.
 
 The script lists the sounds it replaces, and stops without building if a mod file is not a WAV file or
 the same name is in the mod twice. It warns about a WAV file that is not 8 or 16-bit PCM, which the
@@ -305,6 +317,17 @@ The archive format is described at the top of the script. In short: the sounds a
 another, XOR-encoded with one byte, followed by a directory encrypted with IDEA under a key built into
 `troop.exe` and an MD5 checksum of the directory. The script keeps the names, their order and
 everything else, and only writes new data, offsets and sizes.
+
+`tr20_soundmod.exe` is built from the script with [PyInstaller](https://pyinstaller.org), and has to
+be rebuilt whenever the script changes. From the repository's top folder, with PyInstaller installed
+(`python -m pip install pyinstaller`, best in a virtual environment of its own):
+
+```
+python -m PyInstaller --onefile --console --clean --noconfirm --name tr20_soundmod --distpath apps/troopanum/utils --workpath build/pyinstaller --specpath build/pyinstaller apps/troopanum/utils/tr20_soundmod.py
+```
+
+Then delete the `build` folder it leaves behind. The current exe was built with PyInstaller 6.22.3
+and 64-bit Python 3.14, so it needs 64-bit Windows.
 
 
 ## Type libraries

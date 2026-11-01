@@ -715,7 +715,8 @@ it is not included here. Put a copy at `untrusted_vb6olb/VB6.OLB`; that folder i
 * `apps/`: the library, one folder per app (section 4). For example `apps/troopanum`:
   * `project/`: `project.json` (the settings: games, omission rules and records, checker data),
     `README.md` (the notes) and `sounds.py` (the sound sorter).
-  * `utils/`: `tr20_soundmod.py`, which builds a Troopanum 2.0 sound archive with your own sounds.
+  * `utils/`: `tr20_soundmod.py`, which builds a Troopanum 2.0 sound archive with your own sounds, and
+    `tr20_soundmod.exe`, the same program built with PyInstaller to run without Python.
   * `compiled/`: your copy of the games (not in git).
   * `work/`: unpacked images and extracted archives (not in git).
   * `source/`: the decompiled source (not in git).

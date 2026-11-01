@@ -1,15 +1,25 @@
 """Troopanum 2.0 sound mod: builds a new tr20.bsc with your own sounds in place of the original ones.
 
-    python -I apps/troopanum/utils/tr20_soundmod.py [FOLDER] [--original BOX]
+Place this script in the Troopanum 2.0 folder, alongside tr20.bsc and troop.exe, and run it there:
+
+    python -I tr20_soundmod.py [FOLDER]
+
+It needs nothing but Python 3. tr20_soundmod.exe, next to it in the repository, is this script built
+with PyInstaller, for players without Python (see apps/troopanum/project/README.md to rebuild it).
 
 FOLDER is your sound mod: WAV files named like the game's sounds (ship1.wav, enemy hit1.wav, ...),
-anywhere in the folder or its subfolders. The script asks for it when it is not given. A sound found
-there replaces the original of the same name (upper or lower case does not matter); every other sound
-is copied from the original tr20.bsc, so the new box always holds all 269 sounds. The new tr20.bsc is
-written into FOLDER. To play the mod, put it in the game's folder in place of the original.
+anywhere in the folder or its subfolders. When it is not given, the script uses the folder "soundmod"
+next to it, and asks for a path if there is none. A sound found there replaces the one of the same name
+(upper or lower case does not matter); every other sound is copied from the game's tr20.bsc, so the
+new box always holds all 269 sounds.
 
-BOX is the original tr20.bsc (default: compiled/Troopanum 2.0/tr20.bsc in this app's folder). It is
-only read. Nothing else is written or deleted.
+The script then asks where to put the new tr20.bsc:
+
+1. over the game's tr20.bsc;
+2. over the game's tr20.bsc, with a copy in FOLDER;
+3. only in FOLDER, leaving the game's tr20.bsc as it is.
+
+Nothing else is written or deleted.
 
 say fatal.wav, register.wav, tone1.wav and tone2.wav are not in tr20.bsc: the game reads them from its
 own folder, so to change them, replace those files there.
@@ -29,15 +39,17 @@ filler are kept, so a mod that replaced nothing would give back the original fil
 """
 import argparse
 import hashlib
-import json
 import os
+import shutil
 import struct
 import sys
+import traceback
 
-HERE = os.path.dirname(os.path.abspath(__file__))
-APP = os.path.dirname(HERE)
-GAME = 'Troopanum 2.0'
+# The Troopanum 2.0 folder: where the script is, or where the .exe is (when built with PyInstaller,
+# __file__ is in the temporary folder the .exe unpacks itself into).
+HERE = os.path.dirname(os.path.abspath(sys.executable if getattr(sys, 'frozen', False) else __file__))
 BOX_NAME = 'tr20.bsc'
+MOD_FOLDER = 'soundmod'                             # the default sound mod folder, next to the script
 ORIGINAL_SHA256 = '0ec54be8b8c8bc8d70e7ef92d7276841014824595414a7973cf7baed06c265e3'
 
 KEY = bytes.fromhex('0cfe36a0c11c7c504259772b53deff4e')   # the directory's IDEA key, from troop.exe
@@ -191,44 +203,53 @@ def wav_check(head):
     return None, None
 
 
-def default_original():
-    compiled = 'compiled'
+def ask(prompt):
+    """input(), but stopping the script when there is no answer to read."""
     try:
-        with open(os.path.join(APP, 'project', 'project.json'), encoding='utf-8') as f:
-            compiled = json.load(f).get('compiled_folder', compiled)
-    except OSError:
-        pass
-    return os.path.join(APP, compiled, GAME, BOX_NAME)
+        return input(prompt).strip()
+    except EOFError:
+        print()
+        sys.exit('Nothing was built.')
 
 
 def main():
-    ap = argparse.ArgumentParser(description='Build a tr20.bsc for Troopanum 2.0 with your own sounds.')
-    ap.add_argument('folder', nargs='?', help='the sound mod folder (asked for when not given)')
-    ap.add_argument('--original', default=default_original(),
-                    help='the original tr20.bsc (default: %(default)s)')
+    ap = argparse.ArgumentParser(description='Build a tr20.bsc for Troopanum 2.0 with your own sounds. '
+                                 'Place this program in the Troopanum 2.0 folder, alongside tr20.bsc '
+                                 'and troop.exe.')
+    ap.add_argument('folder', nargs='?',
+                    help='the sound mod folder (default: the folder "%s" next to this program, or '
+                         'asked for when there is none)' % MOD_FOLDER)
     args = ap.parse_args()
 
-    folder = args.folder if args.folder is not None else input('Sound mod folder: ')
+    game_box = os.path.join(HERE, BOX_NAME)
+    if not os.path.isfile(game_box):
+        sys.exit('There is no %s in %s.\nPlace this program in the Troopanum 2.0 folder, alongside '
+                 'tr20.bsc and troop.exe, and run it again.' % (BOX_NAME, HERE))
+
+    if args.folder is not None:
+        folder = args.folder
+    elif os.path.isdir(os.path.join(HERE, MOD_FOLDER)):
+        folder = os.path.join(HERE, MOD_FOLDER)
+    else:
+        print('There is no "%s" folder in %s.' % (MOD_FOLDER, HERE))
+        folder = ask('Type the path of your sound mod folder: ')
     folder = folder.strip().strip('"')
     if not folder or not os.path.isdir(folder):
         sys.exit('No such folder: %s' % folder)
     folder = os.path.abspath(folder)
-    out_path = os.path.join(folder, BOX_NAME)
+    mod_copy = os.path.join(folder, BOX_NAME)
 
-    if not os.path.isfile(args.original):
-        sys.exit('The original tr20.bsc is not at %s.\nPut your copy of Troopanum 2.0 there (see '
-                 'apps/troopanum/project/README.md), or give its path with --original.' % args.original)
-    if os.path.exists(out_path) and os.path.samefile(out_path, args.original):
-        sys.exit('%s is the original tr20.bsc, which this would overwrite. Use another folder for the '
-                 'mod.' % out_path)
+    if os.path.exists(mod_copy) and os.path.samefile(mod_copy, game_box):
+        sys.exit('%s is the game\'s tr20.bsc. Use another folder for the mod.' % mod_copy)
     try:
-        box = Box(args.original)
+        box = Box(game_box)
     except ValueError as e:
-        sys.exit('%s: %s' % (args.original, e))
-    print('Original: %s (%d sounds)' % (args.original, len(box.names)))
+        sys.exit('%s: %s' % (game_box, e))
+    print('Game: %s (%d sounds)' % (game_box, len(box.names)))
     if hashlib.sha256(box.data).hexdigest() != ORIGINAL_SHA256:
-        print('  Note: this is not the tr20.bsc of the original release (its checksum differs). The '
-              'sounds you do not replace are copied from it as they are.')
+        print('  Note: this is not the tr20.bsc of the original release (its checksum differs; it may '
+              'hold an earlier mod). The sounds you do not replace are copied from it as they are.')
+    print('Mod:  %s' % folder)
 
     index = {n.lower(): i for i, n in enumerate(box.names)}
     found, loose, unknown = {}, [], []
@@ -284,26 +305,68 @@ def main():
     if unchanged:
         print('(%d more sounds in the mod are the same as the original.)' % unchanged)
 
-    if os.path.exists(out_path):
-        answer = input('%s already exists. Replace it? [y/N] ' % out_path)
-        if answer.strip().lower() not in ('y', 'yes'):
+    print()
+    print('Where should the new tr20.bsc go?')
+    print('  1  Overwrite the game\'s tr20.bsc')
+    print('  2  Overwrite the game\'s tr20.bsc, and keep a copy in the mod folder')
+    print('  3  Do not overwrite the game\'s tr20.bsc, only store it in the mod folder')
+    choice = ask('Answer 1, 2 or 3: ')
+    while choice not in ('1', '2', '3'):
+        choice = ask('Please answer 1, 2 or 3: ')
+    # the game's tr20.bsc is always replaced last, so a failure before that leaves the game as it was
+    targets = {'1': [game_box], '2': [mod_copy, game_box], '3': [mod_copy]}[choice]
+
+    if mod_copy in targets and os.path.exists(mod_copy):
+        if ask('%s already exists. Replace it? [y/N] ' % mod_copy).lower() not in ('y', 'yes'):
             sys.exit('Nothing was built.')
 
-    # build next to the target and move it into place only once it is complete and checked
-    part = out_path + '.part'
+    # build next to the first target, check it, then put it (and any copy) in place
+    staged = [(t + '.part', t) for t in targets]
     try:
+        part = staged[0][0]
         build(box, replacements, part)
         new = Box(part)
         if new.names != box.names:
-            raise ValueError('the names changed')
-        os.replace(part, out_path)
-    except BaseException:
-        if os.path.exists(part):
-            os.remove(part)
-        raise
-    print('Wrote %s (%d bytes).' % (out_path, len(new.data)))
-    print('Put it in the Troopanum 2.0 folder in place of tr20.bsc.')
+            raise ValueError('the new tr20.bsc does not read back: the names changed')
+        for other, _ in staged[1:]:
+            shutil.copyfile(part, other)
+        for part, target in staged:
+            os.replace(part, target)
+            print('Wrote %s (%d bytes).' % (target, len(new.data)))
+    except OSError as e:
+        sys.exit('Could not write the new tr20.bsc: %s\nIf the game is running, close it. If access '
+                 'was denied, run this program as administrator.' % e)
+    finally:
+        for part, _ in staged:
+            if os.path.exists(part):
+                os.remove(part)
+    if game_box in targets:
+        print('The game now plays your sounds.')
+    else:
+        print('To play the mod, put it in the Troopanum 2.0 folder in place of tr20.bsc.')
+
+
+def run():
+    """main(), then, when run interactively, a wait for Enter: started by double-clicking, the program
+    has a console window of its own, which would otherwise close before its messages can be read."""
+    try:
+        main()
+        code = 0
+    except SystemExit as e:
+        code = e.code
+        if isinstance(code, str):
+            print(code, file=sys.stderr)
+            code = 1
+    except Exception:
+        traceback.print_exc()
+        code = 1
+    if sys.stdin is not None and sys.stdin.isatty():
+        try:
+            input('\nPress Enter to close.')
+        except (EOFError, KeyboardInterrupt):
+            pass
+    sys.exit(code)
 
 
 if __name__ == '__main__':
-    main()
+    run()
