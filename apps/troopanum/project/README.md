@@ -36,7 +36,8 @@ The program names (used with `--game` and by the checker) are the folder names:
   the sounds in the archive `tr20.bsc`. Built without optimisation, unlike the others.
 
 Only `troop.exe` is decompiled. The helper programs that come with the games (`config.exe`,
-`register.exe`, and in 2.0 `joystick.exe`) are not.
+`register.exe`, and in 2.0 `joystick.exe`) are not. "Sound formats" below says what `config.exe` does
+to the sounds of 1.5, 1.6 and SP 1.6.
 
 
 ## The files you need
@@ -212,6 +213,60 @@ python -I apps/troopanum/project/sounds.py
 ```
 
 Give a folder to re-sort somewhere else, for example a copy made with `build_sourcecode.py --out`.
+
+
+## Sound formats
+
+Every version plays its sounds with DirectSound 8 (`CreateSoundBufferFromFile`), which reads WAV files
+only, asking for each one as `<name>.wav` in its own folder. The buffers are not 3D, so mono and stereo
+both work. Their flags are 98 in 1.5, 1.6, SP 1.6 and Classic (static, with frequency and pan
+control) and 226 in 2.0 (the same plus volume control). 1.5, 1.6, SP 1.6 and Classic also play five
+MIDI tunes with DirectMusic 8 (`DirectMusicLoader8.LoadSegment`, as `<name>.mid`); 2.0 has no MIDI.
+
+What each version has (the counts include sounds the game never plays):
+
+* **Troopanum 1.5**: all loose, next to `troop.exe`.
+  * 146 WMA: Windows Media Audio 2, 44,100 Hz, stereo, 64 kbit/s.
+  * 10 WAV, PCM: 3 at 44,100 Hz 16-bit stereo (`ship1`, `ship3`, `ship4`), 2 at 44,100 Hz 16-bit
+    mono (`boss drop`, `ship2`), 3 at 22,050 Hz 8-bit mono (`enemy hit99`, `land`, `ship99`) and 2 at
+    11,025 Hz 16-bit stereo (`say config first`, `say fatal`).
+  * 5 MIDI: type 0, one track, 192 ticks per quarter note (`intro`, `intermission5`, `intermission9`,
+    `you win`, `game over`). The same files, byte for byte, are in 1.6, SP 1.6 and Classic.
+* **Troopanum 1.6**: all loose.
+  * 107 WMA: Windows Media Audio 2, 44,100 Hz, stereo, 96 kbit/s.
+  * 50 WAV, 16-bit PCM: 32 at 44,100 Hz stereo, 7 at 44,100 Hz mono, 8 at 22,050 Hz stereo (the
+    background music), 2 at 22,050 Hz mono (`enemy hit99`, `ship99`) and 1 at 48,000 Hz mono
+    (`boss drop`).
+  * 5 MIDI (see 1.5).
+* **Troopanum SP 1.6**: all loose.
+  * 141 WMA: Windows Media Audio 2, 44,100 Hz, stereo, 96 kbit/s.
+  * 28 WAV, 16-bit PCM: 11 at 44,100 Hz stereo, 6 at 44,100 Hz mono, 8 at 22,050 Hz stereo (the
+    background music), 2 at 22,050 Hz mono and 1 at 48,000 Hz mono.
+  * 5 MIDI (see 1.5).
+* **Classic Troopanum**:
+  * 157 WAV in `cltr02.bsc` (a compressed MoleBox archive), 16-bit PCM at 22,050 Hz: 148 stereo and
+    9 mono. No WMA.
+  * 5 MIDI, loose (see 1.5).
+* **Troopanum 2.0**: no WMA and no MIDI; the music is WAV too.
+  * 268 WAV in `tr20.bsc` (stored, XOR-encoded; see "Modding the sounds of 2.0"), 16-bit PCM: 167 at
+    22,050 Hz stereo, 98 at 22,050 Hz mono, 2 at 44,100 Hz stereo and 1 at 44,100 Hz mono.
+  * `no gun.wav.sfap0` in `tr20.bsc`: a peak file left over from the Sound Forge audio editor (a WAV
+    with an extra `sfap` chunk and silent audio). The game never loads it.
+  * 4 WAV, loose, PCM: `register` (22,050 Hz 16-bit stereo), `say fatal` (22,050 Hz 16-bit mono),
+    `tone1` (11,025 Hz 8-bit mono) and `tone2` (11,025 Hz 16-bit mono).
+
+The games never play the WMA files: they are the compressed form 1.5, 1.6 and SP 1.6 were distributed
+in, and only become WAV files when `config.exe` runs. The game makes sure it has run: without
+`config.dat`, which `config.exe` writes, it plays "say config first" and quits. On its first run,
+`config.exe` converts every `*.wma` in the game folder into a WAV file of the same name, with an
+ActiveX control, `MSAUDIOLib.MsAudio2Wave`, that is not in the game folders. Then it deletes the WMA
+files. In 1.5 the two warnings the game can play before that (`say config first` and
+`say fatal`) are WAV files; in 1.6 and SP 1.6 they are WMA files like the rest.
+
+This comes from decompiling `config.exe` of 1.5, 1.6 and SP 1.6 on their own (they are not part of the
+build); 2.0's `config.exe` converts nothing. The format of the converted WAV files depends on that
+control and has not been checked. The copies in `source/<version>/sounds` keep the WMA files as they
+are, so running 1.5, 1.6 or SP 1.6 from the source needs them decoded to WAV first.
 
 
 ## Modding the sounds of 2.0

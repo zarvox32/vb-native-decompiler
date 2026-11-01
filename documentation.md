@@ -253,8 +253,15 @@ repository, decompile them and know what they got. They cover:
 * what the omission rules leave out, and why;
 * the compile options of each program (section 6);
 * the check results: runs, passes and how much machine code was reached;
-* anything particular to these programs: how they differ from each other, what their sounds or data
-  files are, and quirks met while decompiling them.
+* the formats of the sound, music and other media files, for each program:
+  * how many files of each kind, and where they are (loose, or in which archive);
+  * the container and codec (PCM WAV, WMA, MP3, Ogg Vorbis, MIDI...), with the sample rate, channels
+    and bits per sample, and the bit rate of compressed audio;
+  * how the program loads and plays them (which API, as which file names, with which buffer flags);
+  * any step outside the program that changes them first, for example an installer or configuration
+    program that converts compressed files into the format the program reads;
+* anything particular to these programs: how they differ from each other, what their sounds and data
+  files are for, and quirks met while decompiling them.
 
 ### Adding an app to the library
 
@@ -572,7 +579,9 @@ load address).
 
 If the project names a `sound_sorter`, its `sort_sounds(game, folder)` function then sorts them, for
 example into folders by use with a description of each sound. Without one, they stay in one folder.
-The app's notes describe its sorter.
+The app's notes describe its sorter, and give the formats of the sounds (section 4, "What the notes
+cover"). The copies are not converted: a file the program only reads after something else has converted
+it (the WMA files of Troopanum 1.5, 1.6 and SP 1.6, for example) is copied as it was shipped.
 
 `build_sourcecode.py --sounds-only` copies and sorts the sounds again without touching the code.
 
