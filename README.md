@@ -140,5 +140,7 @@ matching error the source raises for another reason.
   `python tlbdump.py typelibs.json` regenerates it with the type libraries of every app in the library.
   It needs comtypes, the 32-bit system DLLs, and Microsoft's VB6 type library, `VB6.OLB`, which is not
   included: `documentation.md`, section 11, says where to get it. Using the tools does not need it.
+* `soundinfo.py`: tells the format of sound files (codec, sample rate, channels, bits). The build uses
+  it to list each program's sound formats in its DECOMPILER_NOTES.txt.
 * `vbinfo.py`, `vbdis.py`, `disraw.py`: quick VB header and disassembly viewers.
 * `lib/`, `emu/`: installed Python packages (not in git).

@@ -31,7 +31,7 @@ The program names (used with `--game` and by the checker) are the folder names:
   differs from 1.6 (129 procedures against 123).
 * **Classic Troopanum** (2011, blindsoftware.com). Its game code is byte-identical to Troopanum 1.6's;
   the re-release packed it with MoleBox and moved the sounds into the archive `cltr02.bsc`. The MIDI
-  music is still loose.
+  music is in the archive too, and also still loose next to the program (the same files).
 * **Troopanum 2.0** (2008, BSC Games; its documentation says version 2.0.2). Packed with MoleBox, with
   the sounds in the archive `tr20.bsc`. Built without optimisation, unlike the others.
 
@@ -117,8 +117,9 @@ For every version, the output should include `warnings 0 unplaced statements 0` 
 written, and the differences are listed. That usually means your copy is a different build (check the
 checksums above) or the tools have changed since the record was made.
 
-Each version's folder gets a DECOMPILER_NOTES.txt with its compile options, what was left out, and how
-the names in the source were made.
+Each version's folder gets a DECOMPILER_NOTES.txt with its compile options, what was left out, how the
+names in the source were made, and the formats of its sound files ("Sound formats" below explains
+them).
 
 
 ## What is left out, and why
@@ -246,7 +247,8 @@ What each version has (the counts include sounds the game never plays):
 * **Classic Troopanum**:
   * 157 WAV in `cltr02.bsc` (a compressed MoleBox archive), 16-bit PCM at 22,050 Hz: 148 stereo and
     9 mono. No WMA.
-  * 5 MIDI, loose (see 1.5).
+  * 5 MIDI (see 1.5), both in `cltr02.bsc` and loose next to `troop.exe`: the same files, byte for
+    byte. The build copies the archive's.
 * **Troopanum 2.0**: no WMA and no MIDI; the music is WAV too.
   * 268 WAV in `tr20.bsc` (stored, XOR-encoded; see "Modding the sounds of 2.0"), 16-bit PCM: 167 at
     22,050 Hz stereo, 98 at 22,050 Hz mono, 2 at 44,100 Hz stereo and 1 at 44,100 Hz mono.

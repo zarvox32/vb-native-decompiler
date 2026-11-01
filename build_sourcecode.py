@@ -6,7 +6,9 @@
 The project file (apps/<name>/project/project.json; with only one app, --project can be left out) lists the
 programs. For each one this writes the decompiled VB6 project into <source folder>/<program>, copies the
 documents the project names, and (unless --code-only) copies the program's sound files into a `sounds`
-subfolder and sorts them with the project's sound sorter, if it has one.
+subfolder and sorts them with the project's sound sorter, if it has one. The formats of the copied sounds
+(soundinfo.py) are listed at the end of the program's DECOMPILER_NOTES.txt; rebuilding only the code keeps
+that list.
 
 Decompiling happens in a temporary folder first. The published code is replaced only when what the
 project's omission rules left out matches that program's record in the project file. If it differs, the
@@ -26,11 +28,34 @@ import sys
 import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(HERE, 'vbdec'))   # python -I leaves the script folder off sys.path
+sys.path[:0] = [HERE, os.path.join(HERE, 'vbdec')]   # python -I leaves the script folder off sys.path
 import project as projects  # noqa: E402
+import soundinfo  # noqa: E402
 
 SOUND_EXT = ('.wma', '.wav', '.mid', '.mp3', '.ogg')
 CODE_FILES = ('.frm', '.bas', '.cls', '.vbp')     # what the decompiler writes (plus notes, pictures)
+NOTES = 'DECOMPILER_NOTES.txt'
+SOUND_HEADING = 'Sound files in the sounds folder'   # starts the last section of the notes
+
+
+def read_notes(path):
+    """(the notes up to the sound files section, that section) of a notes file; '' for a missing part."""
+    if not os.path.exists(path):
+        return '', ''
+    with open(path, encoding='utf-8') as f:
+        text = f.read()
+    if text.startswith(SOUND_HEADING):
+        return '', text
+    at = text.find('\n' + SOUND_HEADING)
+    if at < 0:
+        return text, ''
+    return text[:at + 1], text[at + 1:]
+
+
+def write_notes(path, body, section):
+    body = body.rstrip('\n')
+    with open(path, 'w', encoding='utf-8', newline='\r\n') as f:
+        f.write(body + '\n\n' + section if body else section)
 
 
 def decompile(proj, game, info, dest, record):
@@ -52,13 +77,16 @@ def decompile(proj, game, info, dest, record):
             print('  %s: the published code was left as it was' % game)
             return False
         # replace the previous code (but not the documents or the sounds)
+        _, sound_section = read_notes(os.path.join(dest, NOTES))
         for f in os.listdir(dest):
             p = os.path.join(dest, f)
-            if os.path.isfile(p) and (f.lower().endswith(CODE_FILES) or f == 'DECOMPILER_NOTES.txt' or
-                                      '_picture' in f):
+            if os.path.isfile(p) and (f.lower().endswith(CODE_FILES) or f == NOTES or '_picture' in f):
                 os.remove(p)
         for f in os.listdir(tmp):
             shutil.move(os.path.join(tmp, f), os.path.join(dest, f))
+        if sound_section:   # the sounds did not change: keep their list in the new notes
+            body, _ = read_notes(os.path.join(dest, NOTES))
+            write_notes(os.path.join(dest, NOTES), body, sound_section)
         return True
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
@@ -83,25 +111,50 @@ def copy_sounds(proj, game, info, dest):
         return
     shutil.rmtree(sdir, ignore_errors=True)   # generated: start clean so old sorting never lingers
     os.makedirs(sdir)
-    for src in sources:
+    origin = {}   # lower-case file name -> where it was copied from
+    for s, src in zip(info.get('sounds', []), sources):
         files = os.listdir(src)
         # an archive that stores upper-case names (Troopanum 2.0's GUN1.WAV) while the code asks for
         # lower case (gun1.wav): use lower case, so the files also work on case-sensitive systems
         lower = all(f == f.upper() for f in files)
         for f in files:
             shutil.copy2(os.path.join(src, f), os.path.join(sdir, f.lower() if lower else f))
+            origin[f.lower()] = "From %s (extracted from the program's archive)" % s
     # loose sound files shipped next to the program (MIDI music etc.)
     skip = {s.lower() for s in proj.data.get('skip_sound_files', [])}
-    gdir = os.path.dirname(proj.exe_path(game))
+    exe = proj.exe_path(game)
+    gdir = os.path.dirname(exe)
     for f in os.listdir(gdir):
         if f.lower().endswith(SOUND_EXT) and f.lower() not in skip:
             dst = os.path.join(sdir, f)
             if not os.path.exists(dst):
                 shutil.copy2(os.path.join(gdir, f), dst)
+                origin[f.lower()] = 'Loose, next to %s' % os.path.basename(exe)
     print('  sounds:', len(os.listdir(sdir)), 'files')
     sort = sound_sorter(proj)
     if sort is not None:
         sort(game, sdir)
+    note_sound_formats(dest, sdir, origin)
+
+
+def note_sound_formats(dest, sdir, origin):
+    """Write (or replace) the list of the sounds' formats at the end of the program's notes. Files the
+    sorter wrote (descriptions) are not in origin and are left out."""
+    groups = {}
+    for d, _, files in os.walk(sdir):
+        for f in files:
+            if f.lower() in origin:
+                groups.setdefault(origin[f.lower()], []).append(os.path.join(d, f))
+    lines = [SOUND_HEADING + ' (formats read from the files by build_sourcecode.py; how the program',
+             "plays them, and anything that converts them first, is in the app's notes):"]
+    for where in sorted(groups):
+        n = len(groups[where])
+        lines.append('  %s, %d file%s:' % (where, n, '' if n == 1 else 's'))
+        lines += ['  ' + line for line in soundinfo.summary(groups[where], sdir)]
+    if not groups:
+        lines.append('  none')
+    body, _ = read_notes(os.path.join(dest, NOTES))
+    write_notes(os.path.join(dest, NOTES), body, '\n'.join(lines) + '\n')
 
 
 def copy_docs(proj, game, dest):

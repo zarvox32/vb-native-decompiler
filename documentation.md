@@ -253,7 +253,8 @@ repository, decompile them and know what they got. They cover:
 * what the omission rules leave out, and why;
 * the compile options of each program (section 6);
 * the check results: runs, passes and how much machine code was reached;
-* the formats of the sound, music and other media files, for each program:
+* the formats of the sound, music and other media files, for each program (`soundinfo.py` reads them,
+  and the build lists them in DECOMPILER_NOTES.txt; section 10):
   * how many files of each kind, and where they are (loose, or in which archive);
   * the container and codec (PCM WAV, WMA, MP3, Ogg Vorbis, MIDI...), with the sample rate, channels
     and bits per sample, and the bit rate of compressed audio;
@@ -583,6 +584,35 @@ The app's notes describe its sorter, and give the formats of the sounds (section
 cover"). The copies are not converted: a file the program only reads after something else has converted
 it (the WMA files of Troopanum 1.5, 1.6 and SP 1.6, for example) is copied as it was shipped.
 
+The build then lists the formats of the copied sounds at the end of the program's DECOMPILER_NOTES.txt,
+in a section headed "Sound files in the sounds folder". It is grouped by where the files came from (an
+archive's extracted files, or loose next to the program), and gives how many files there are of each
+format, with their names when there are only a few. For example, for Troopanum 2.0:
+
+```
+  From work/tr20_box/files (extracted from the program's archive), 269 files:
+   167  .wav    WAV, PCM, 22,050 Hz, 16-bit, stereo
+    98  .wav    WAV, PCM, 22,050 Hz, 16-bit, mono
+     2  .wav    WAV, PCM, 44,100 Hz, 16-bit, stereo: item/shield active.wav, unused/bomber hit.wav
+     1  .sfap0  WAV, PCM, 22,050 Hz, 16-bit, stereo: unused/no gun.wav.sfap0
+     ...
+```
+
+The formats come from the files' contents, not their names. The section only says what the files are;
+how the program plays them, and anything that converts them first, belong in the app's notes.
+`--sounds-only` replaces the section, and `--code-only` keeps it.
+
+`soundinfo.py` is what reads the formats. It can also be run on its own, for example to write an app's
+notes:
+
+```
+python -I soundinfo.py "apps/troopanum/source/Troopanum 1.6/sounds"
+python -I soundinfo.py "apps/troopanum/compiled/Troopanum 1.6/arrows.wma"
+```
+
+It knows WAV (any codec, including ADPCM and the extensible format), WMA and other ASF audio, MIDI
+(including RIFF MIDI), MP3, and Ogg Vorbis and Opus, and only reads the headers.
+
 `build_sourcecode.py --sounds-only` copies and sorts the sounds again without touching the code.
 
 
@@ -691,6 +721,7 @@ it is not included here. Put a copy at `untrusted_vb6olb/VB6.OLB`; that folder i
   * `source/`: the decompiled source (not in git).
 * `build_sourcecode.py`: decompiles an app's programs into its `source` folder.
 * `molebox_extract.py`, `bsc_split.py`, `unpack_emu.py`, `patch_speakeasy.py`: unpacking.
+* `soundinfo.py`: the formats of sound files (section 10).
 * `vbdec/`: the decompiler.
   * `main.py`: the command-line driver.
   * `project.py`: reads project files, compares and stores omission records.
