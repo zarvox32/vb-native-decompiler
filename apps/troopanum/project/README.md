@@ -286,8 +286,7 @@ in place of some of the originals. The game itself is not changed.
    python -I apps/troopanum/utils/tr20_soundmod.py
    ```
 
-3. It writes `tr20.bsc` into the mod folder. Put that in the game's folder in place of the original,
-   and keep a copy of the original.
+3. It writes `tr20.bsc` into the mod folder. Put that in the game's folder in place of the original.
 
 Every sound the mod does not have is copied from the original `tr20.bsc`, which the script reads from
 `apps/troopanum/compiled/Troopanum 2.0` (`--original` gives another path). It only reads it. The

@@ -6,8 +6,7 @@ FOLDER is your sound mod: WAV files named like the game's sounds (ship1.wav, ene
 anywhere in the folder or its subfolders. The script asks for it when it is not given. A sound found
 there replaces the original of the same name (upper or lower case does not matter); every other sound
 is copied from the original tr20.bsc, so the new box always holds all 269 sounds. The new tr20.bsc is
-written into FOLDER. To play the mod, put it in the game's folder in place of the original (keep a copy
-of the original).
+written into FOLDER. To play the mod, put it in the game's folder in place of the original.
 
 BOX is the original tr20.bsc (default: compiled/Troopanum 2.0/tr20.bsc in this app's folder). It is
 only read. Nothing else is written or deleted.
@@ -303,7 +302,7 @@ def main():
             os.remove(part)
         raise
     print('Wrote %s (%d bytes).' % (out_path, len(new.data)))
-    print('Put it in the Troopanum 2.0 folder in place of tr20.bsc (keep a copy of the original).')
+    print('Put it in the Troopanum 2.0 folder in place of tr20.bsc.')
 
 
 if __name__ == '__main__':
