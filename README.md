@@ -23,10 +23,13 @@ read the checker's results, how to investigate a mismatch, and tips.
 Everything for one app is in its folder, `apps/<name>`:
 
 * `project`: the settings (`project.json`), the notes (`README.md`) and any helpers the settings name.
-  This is the only part in git.
+* `utils` (some apps only): specialised tools that change the data of the compiled app, for example
+  Troopanum 2.0's sound mod builder. The app's notes describe them.
 * `compiled`: your copy of the programs.
 * `work`: unpacked images and files extracted from archives.
 * `source`: the decompiled source, one folder per program.
+
+Only `project` and `utils` are in git.
 
 ## Setup
 
@@ -125,7 +128,8 @@ matching error the source raises for another reason.
 
 ## What is what
 
-* `apps/`: the library, one folder per app (see "The library" above).
+* `apps/`: the library, one folder per app (see "The library" above). An app's `utils` folder, where
+  there is one, has tools for changing its compiled data.
 * `build_sourcecode.py`: decompiles every program of an app into its `source` folder.
 * `vbdec/`: the decompiler. `main.py` is the command-line driver; `project.py` reads project files and
   compares and stores omission records.

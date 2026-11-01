@@ -6,10 +6,13 @@ passes the checker (results below).
 
 Everything for Troopanum is in `apps/troopanum`:
 
-* `project`: the part in git.
+* `project`: in git.
   * `project.json`: the settings, including the record of what is left out of each version.
   * `sounds.py`: the sound sorter.
   * `README.md`: these notes.
+* `utils`: in git.
+  * `tr20_soundmod.py`: builds a Troopanum 2.0 sound archive with your own sounds (see "Modding the
+    sounds of 2.0" below).
 * `compiled`: your copy of the games.
 * `work`: the unpacked images and the files extracted from the archives.
 * `source`: the decompiled source.
@@ -209,6 +212,43 @@ python -I apps/troopanum/project/sounds.py
 ```
 
 Give a folder to re-sort somewhere else, for example a copy made with `build_sourcecode.py --out`.
+
+
+## Modding the sounds of 2.0
+
+`utils/tr20_soundmod.py` builds a new `tr20.bsc` for the original Troopanum 2.0, with your own sounds
+in place of some of the originals. The game itself is not changed.
+
+1. Make a folder for the mod, anywhere, and put your WAV files in it, named like the game's sounds
+   (`ship1.wav`, `enemy hit1.wav`...). Subfolders are fine, so a copy of
+   `apps/troopanum/source/Troopanum 2.0/sounds` with some files replaced works, and its
+   `_description.txt` files say what each sound is. Upper or lower case does not matter.
+2. Run the script, and give it the folder when it asks (or put the folder on the command line):
+
+   ```
+   python -I apps/troopanum/utils/tr20_soundmod.py
+   ```
+
+3. It writes `tr20.bsc` into the mod folder. Put that in the game's folder in place of the original,
+   and keep a copy of the original.
+
+Every sound the mod does not have is copied from the original `tr20.bsc`, which the script reads from
+`apps/troopanum/compiled/Troopanum 2.0` (`--original` gives another path). It only reads it. The
+build takes a second or so.
+
+The script lists the sounds it replaces, and stops without building if a mod file is not a WAV file or
+the same name is in the mod twice. It warns about a WAV file that is not 8 or 16-bit PCM, which the
+game may not be able to play: the original sounds are 16-bit PCM at 22,050 or 44,100 Hz, mono or
+stereo. If the game cannot load a sound, it says "while loading file" and the sound's name, and quits.
+
+`say fatal.wav`, `register.wav`, `tone1.wav` and `tone2.wav` are not in `tr20.bsc`: the game loads them
+from its own folder, so replace those files there instead. The script lists any of them it finds in
+the mod, and any WAV file whose name is not one of the game's sounds.
+
+The archive format is described at the top of the script. In short: the sounds are stored one after
+another, XOR-encoded with one byte, followed by a directory encrypted with IDEA under a key built into
+`troop.exe` and an MD5 checksum of the directory. The script keeps the names, their order and
+everything else, and only writes new data, offsets and sizes.
 
 
 ## Type libraries

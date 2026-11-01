@@ -10,8 +10,8 @@ emu/
 # (documentation.md, section 11, says where to get it).
 untrusted_vb6olb/
 
-# In each app, only the project folder (settings and notes) is in git: not your copy of the programs,
-# nor anything the tools make from them.
+# In each app, only the project folder (settings and notes) and the utils folder (tools for changing the
+# app's data) are in git: not your copy of the programs, nor anything the tools make from them.
 apps/*/compiled/
 apps/*/source/
 apps/*/work/

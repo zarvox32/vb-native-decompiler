@@ -136,12 +136,16 @@ The decompiler's stages, in the order a procedure goes through them:
 The library is the `apps` folder. It has one folder per app: a program, or a set of related programs
 such as the versions of one game. Everything for an app is in its folder, `apps/<name>`:
 
-* `project`: the only part in git.
+* `project`: in git.
   * `project.json`: the settings. Which programs there are, what to leave out of the published
     source, a record of what that came to for each program, and what the checker needs to know.
   * `README.md`: the notes. Everything someone with their own copy of the programs needs to decompile
     them again (see "What the notes cover" below).
   * any helpers the settings name, for example a sound sorter (section 10).
+* `utils`: in git, and only in some apps. Specialised tools that change the data of the compiled app
+  rather than decompile it, for example Troopanum 2.0's sound mod builder, which writes a new sound
+  archive for the original game. Nothing in the settings refers to them; the app's notes describe
+  each one.
 * `compiled`: your copy of the programs. The app's notes say exactly which files go where.
 * `work`: unpacked images and files extracted from archives (section 5).
 * `source`: the decompiled source, one folder per program.
@@ -670,8 +674,9 @@ it is not included here. Put a copy at `untrusted_vb6olb/VB6.OLB`; that folder i
 ## 14. Folder map
 
 * `apps/`: the library, one folder per app (section 4). For example `apps/troopanum`:
-  * `project/`: the part in git: `project.json` (the settings: games, omission rules and records,
-    checker data), `README.md` (the notes) and `sounds.py` (the sound sorter).
+  * `project/`: `project.json` (the settings: games, omission rules and records, checker data),
+    `README.md` (the notes) and `sounds.py` (the sound sorter).
+  * `utils/`: `tr20_soundmod.py`, which builds a Troopanum 2.0 sound archive with your own sounds.
   * `compiled/`: your copy of the games (not in git).
   * `work/`: unpacked images and extracted archives (not in git).
   * `source/`: the decompiled source (not in git).
