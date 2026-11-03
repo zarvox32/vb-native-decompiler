@@ -193,10 +193,9 @@ CLASSIC = [
         ('score arrows', 'top 10 menu help'),
     ]),
     ('music', [
-        'Music. The intro, intermission, you win and game over tunes are MIDI files.',
+        'Music for the menu and the levels. Each track plays in a loop.',
     ], [
         ('menu background', 'menu music'),
-        ('intro', 'when a game starts'),
         ('background1', 'levels 1 and 2, and the speed round'),
         ('background1a', 'levels 3 and 4'),
         ('background2', 'levels 5 and 6'),
@@ -204,14 +203,21 @@ CLASSIC = [
         ('background3', 'levels 9 and 10'),
         ('background3a', 'levels 11 and 12'),
         ('background bonus', 'bonus level'),
+    ]),
+    ('number', [
+        'Spoken numbers for the score, wave, lives and landed ships.',
+    ], NUMBERS),
+    ('scenes', [
+        'Scenes: the tunes that play outside of gameplay, when a game starts, between levels, and when it ends.',
+        'They are MIDI files. A key press skips the intro after 2 seconds, and you win and game over',
+        'after 5. The intermissions before levels 5 and 9 cannot be skipped, and play to the end.',
+    ], [
+        ('intro', 'when a game starts'),
         ('intermission5', 'before level 5'),
         ('intermission9', 'before level 9'),
         ('you win', 'you beat the game'),
         ('game over', 'game over'),
     ]),
-    ('number', [
-        'Spoken numbers for the score, wave, lives and landed ships.',
-    ], NUMBERS),
     SCORES_ONLINE,
     TEST_SPEAKERS,
     WARNING,
@@ -458,10 +464,10 @@ TR20 = [
         ('no gun', 'you fired while your laser was off'),
     ]),
     ('music', [
-        'Music. In the resurrection mission the level music plays in reverse order.',
+        'Music for the menu, the levels and the pause. Each track plays in a loop.',
+        'In the resurrection mission the levels play in reverse order, and each keeps its own music.',
     ], [
         ('menu background', 'menu music'),
-        ('intro', 'when a game starts'),
         ('background1', 'levels 1 and 2, and the speed round'),
         ('background1a', 'levels 3 and 4'),
         ('background2', 'levels 5 and 6'),
@@ -473,14 +479,21 @@ TR20 = [
         ('background gorb', 'gorbian levels'),
         ('background meteor', 'hidden meteorite round'),
         ('background ship2', 'a wave of ships called in by a lunar lifter'),
-        ('intermission5', 'before level 5'),
-        ('intermission9', 'before level 9'),
-        ('intermission16', 'before level 16'),
         ('pause background', 'game paused (P key)'),
     ]),
     ('number', [
         'Spoken numbers for the score, wave, lives, landed ships and item counts.',
     ], NUMBERS),
+    ('scenes', [
+        'Scenes: the sounds that play outside of gameplay, when a game starts and between levels.',
+        'A key press skips any of them after 2 seconds. There is no you win or game over tune: when you',
+        'beat the game you hear Lord Vector\'s ship destroyed (lord vector folder), then the spoken "you win".',
+    ], [
+        ('intro', 'when a game starts'),
+        ('intermission5', 'before level 5'),
+        ('intermission9', 'before level 9'),
+        ('intermission16', 'before level 16'),
+    ]),
     SCORES_ONLINE,
     TEST_SPEAKERS,
     WARNING,

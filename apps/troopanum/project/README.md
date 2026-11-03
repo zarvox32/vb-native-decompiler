@@ -198,8 +198,10 @@ the names in capitals, while the code asks for lower case, so the copies get low
 `sounds.py` then sorts them into folders by use, worked out by reading where the decompiled code loads
 and plays each file:
 
-* All versions: ambiance, announcement, enemy, game, item, learn, menu, music, number, scores online,
-  test speakers, warning, and unused (files the game never plays).
+* All versions: ambiance, announcement, enemy, game, item, learn, menu, music, number, scenes,
+  scores online, test speakers, warning, and unused (files the game never plays). Scenes are the
+  intro, the intermissions between levels, and in 1.x the you win and game over tunes: what plays
+  outside of gameplay. Music is the menu and level music, and in 2.0 the pause music.
 * 2.0 also has bonus round, gorb, lord vector and moon rock.
 
 Each folder except unused gets a `_description.txt`; the underscore keeps it at the top of the list.
