@@ -1,0 +1,6 @@
+Error and warning messages.
+Sounds that are unencrypted are not a part of the tr20.bsc file, they are exposed in the game's directory.
+
+say fatal = fatal error at startup (DirectX could not start), unencrypted
+say config first = run the configuration program first
+register = this part needs the registered version, unencrypted

@@ -1,0 +1,22 @@
+Special items: shoot them as they fall, then use them (page up and page down, or the number keys).
+Voice: when you get it, pick it, or list your items with I.
+
+item drop = an item falling
+item centered = beep: an item is in your line of fire
+item shoot = you shot an item and got it
+item cancel = item put away with the spacebar, back to your normal laser
+no more = you do not have that item, or no items at all
+super laser = super laser shot
+smart bomb = smart bomb blast
+portal = portal used, warps you to the next or previous level
+nuke = ground nuke used, clears all landed ships
+rifle = rifle shot
+shield = moon rock shield turned on
+shield active = moon rock shield running
+reinforcer = base reinforced: more ships can land before you lose a life
+say super laser = voice: super laser
+say smart bomb = voice: smart bomb
+say portal = voice: portal
+say nuke = voice: ground nuke
+say rifle = voice: rifle
+say shield = voice: moon rock shield

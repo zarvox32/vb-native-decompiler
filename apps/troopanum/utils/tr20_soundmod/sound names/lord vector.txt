@@ -1,0 +1,12 @@
+Level 16: Lord Vector, his three energy shields and his bombs.
+
+armor1 = left energy shield
+armor2 = center energy shield
+armor3 = right energy shield
+shield destroy = an energy shield destroyed
+vector3 = Lord Vector speaks as he arrives, after all shields are down
+ship9 = Lord Vector's ship
+ship8 = Lord Vector's bomb falling; if it lands on you, your base is destroyed
+vector1 = Lord Vector speaks after you hit him 20 times
+vector2 = Lord Vector speaks when 5 more hits will finish him
+mamma destroy = Lord Vector's ship destroyed, you win

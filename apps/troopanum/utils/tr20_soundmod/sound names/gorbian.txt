@@ -1,0 +1,12 @@
+Gorbian ships. On gorbian levels you move a target: left and right to line up, then up and down to aim.
+
+gorb1 = gorbian cruiser falling
+gorb2 = gorbian pod rising
+gorb3 = gorbian infiltrator falling
+gorb4 = gorbian destroyer falling
+gorb5 = gorbian fleet ship falling
+gorb hit = gorbian ship die
+target0 = slow target beep: not lined up with anything
+target1 = faster target beep: lined up left and right, now aim up or down
+target2 = rapid target beep: on target, fire
+target wall = your target hit the top or bottom edge

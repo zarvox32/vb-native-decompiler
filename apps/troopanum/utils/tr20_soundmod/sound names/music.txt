@@ -1,0 +1,16 @@
+Music for the menu, the levels and the pause. Each track plays in a loop.
+In the resurrection mission the levels play in reverse order, and each keeps its own music.
+
+menu background = menu music
+background1 = levels 1 and 2, and the speed round
+background1a = levels 3 and 4
+background2 = levels 5 and 6
+background2a = levels 7 and 8
+background3 = levels 9 and 10
+background3a = levels 11 and 12
+background4 = levels 13 to 15, and the landing ship and ship barrage rounds
+background4a = level 16, Lord Vector
+background gorb = gorbian levels
+background meteor = hidden meteorite round
+background ship2 = a wave of ships called in by a lunar lifter
+pause background = game paused (P key)

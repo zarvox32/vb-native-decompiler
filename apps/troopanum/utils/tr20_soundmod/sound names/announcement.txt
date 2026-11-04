@@ -1,0 +1,15 @@
+Spoken game information. The numbers come from the number folder.
+
+life alarm = one more landing will destroy your base
+warn gorb = a gorbian level is starting
+say wave = "wave", followed by the wave number (shift key, and between levels)
+say bonus round = "bonus round", said instead of the wave number on a bonus round
+say points = "points", said after your score
+say life = "life", when 1 life is left (enter key)
+say lives = "lives"
+say ship landed = "ship landed", when 1 ship has landed (enter key)
+say ships landed = "ships landed"
+reverse = insane only: the left and right arrows are swapped, or back to normal
+say game over = game over
+say you win = you beat the game
+say final score = "final score", followed by your score

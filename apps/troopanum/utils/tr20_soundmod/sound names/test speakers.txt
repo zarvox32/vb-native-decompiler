@@ -1,0 +1,6 @@
+Speaker test from the main menu: checks that left and right are not swapped.
+
+left speaker sound = plays in the left speaker
+right speaker sound = plays in the right speaker
+ask correct speakers = asks if you heard left first, then right (Y or N)
+speaker setting saved = you answered N, so left and right will be swapped from now on

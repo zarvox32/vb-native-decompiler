@@ -1,0 +1,18 @@
+The bonus rounds: the landing ship round after level 4, the ship barrage round after level 8,
+and a hidden meteorite round (type D A N in the main menu).
+
+say lander level = the landing ship round is starting
+lander ship = your landing ship; it gets lower in pitch as you come down
+thrust = your thruster (arrow keys)
+lander wind = the wind pushing you; where and how loud it is tells its direction and strength
+lander wall = you bounced off a wall
+lander crash = you crashed
+lander win = you landed safely
+barrage1 = ship barrage intro; the number of sets you need is spoken after it
+barrage2 = end of the intro on easy: the prize is a special item
+barrage3 = end of the intro on normal and insane: the prize is an extra life
+set complete = you finished a set of ships; the next set number is spoken after it
+extra life = you got an extra life: for landing safely, or as the ship barrage prize
+say meteorite level = the meteorite round is starting
+ship0 = meteor falling
+meteor hit = meteor die

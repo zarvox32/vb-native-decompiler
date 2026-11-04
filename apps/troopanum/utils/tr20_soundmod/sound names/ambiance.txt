@@ -1,0 +1,4 @@
+Background messages: during a level, two random messages play, each in the left or right speaker.
+They can be turned off in the program settings. Gorbian levels have none.
+
+message1 to message10 = background messages

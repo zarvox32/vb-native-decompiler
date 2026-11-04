@@ -1,0 +1,8 @@
+The sounds that play outside of gameplay, when a game starts and between levels.
+A key press skips any of them after 2 seconds. There is no you win or game over tune: when you
+beat the game you hear Lord Vector's ship destroyed (lord vector folder), then the spoken "you win".
+
+intro = when a game starts
+intermission5 = before level 5
+intermission9 = before level 9
+intermission16 = before level 16

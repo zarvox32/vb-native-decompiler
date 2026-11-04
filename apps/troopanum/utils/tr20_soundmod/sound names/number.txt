@@ -1,0 +1,7 @@
+Spoken numbers for the score, wave, lives, landed ships and item counts.
+
+0 to 20 = zero to twenty
+30 to 90 = thirty, forty and so on up to ninety
+hundred = hundred
+thousand = thousand
+million = million

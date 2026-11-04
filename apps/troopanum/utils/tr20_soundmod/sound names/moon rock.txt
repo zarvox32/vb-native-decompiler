@@ -1,0 +1,7 @@
+Moon rocks: your laser cannot hit them. Use the side lasers (alt plus left or right arrow).
+
+rock = a moon rock on the screen
+shoot rock = side laser shot
+kill rock = moon rock destroyed
+smash rock = you ran into a moon rock; your laser is off for a few seconds
+no gun = you fired while your laser was off

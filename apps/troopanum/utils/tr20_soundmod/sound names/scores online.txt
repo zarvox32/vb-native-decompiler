@@ -1,0 +1,7 @@
+Posting your score to the online top 10 (the original score server no longer exists).
+
+check connected = make sure you are online, then press Y to send or N to cancel
+sending score = sending your score
+error sending = the score could not be sent
+you made it = your score made the top 10 (your place is spoken after it)
+say not enough = no score to send, or your score is too low for the top 10

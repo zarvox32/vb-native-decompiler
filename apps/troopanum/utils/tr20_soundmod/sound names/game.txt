@@ -1,0 +1,10 @@
+Your gun, moving, and changing levels.
+
+gun1 = laser shot
+bounce = you hit the edge of the screen
+hyperbounce = you hit the edge with hyperactive sides on and bounced somewhere else
+warn center = center beep: you passed the middle of the screen (the L key turns it on or off)
+locate = shows where you are on the board (insert key)
+user dies = your base is destroyed, you lose a life
+next level = warp to the next level
+prior level = warp back to the previous level (portal)

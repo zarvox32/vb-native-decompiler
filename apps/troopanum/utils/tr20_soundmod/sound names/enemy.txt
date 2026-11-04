@@ -1,0 +1,21 @@
+Enemy ships on normal levels, and the bomber.
+
+ship1 = cruiser falling
+ship2 = lunar lifter rising
+ship3 = enforcer falling (takes more than one hit)
+ship4 = hover craft falling (jumps to a new spot now and then)
+ship5 = liquidator falling (sways left and right)
+enemy hit1 = cruiser die
+enemy hit2 = lunar lifter die
+enemy hit3 = enforcer die
+enemy hit4 = hover craft die
+enemy hit5 = liquidator die
+not dead = enemy hit, but not destroyed yet
+land = an enemy landed on your base
+gone = a lunar lifter escaped off the top
+ship2 wave = the escaped lunar lifter called in a wave of ships
+ship2 steal = the escaped lunar lifter stole one of your items
+bomber drop = bomber falling
+bomber not dead = bomber hit; the pitch goes up with each hit (also used for hits on Lord Vector)
+bomber dead = bomber die
+ship centered = beep: an enemy is in your line of fire
