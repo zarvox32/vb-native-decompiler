@@ -61,8 +61,8 @@ WARNING = ('warning', [
     'Error and warning messages.',
 ], [
     ('say fatal', 'fatal error at startup (DirectX could not start)'),
-    ('say config first', 'run the configuration program first (the port does not need this)'),
-    ('register', 'this part needs the registered version (the port treats the game as registered)'),
+    ('say config first', 'run the configuration program first'),
+    ('register', 'this part needs the registered version'),
 ])
 
 CLASSIC = [
@@ -76,8 +76,8 @@ CLASSIC = [
         'Spoken game information. The numbers come from the number folder.',
     ], [
         ('say wave', '"wave", followed by the wave number (shift key, and between levels)'),
-        ('say bonus round', '"bonus round", said instead of the wave number on the bonus level'),
-        ('say bonus level', 'the bonus level is starting'),
+        ('say bonus round', '"bonus round", said instead of the wave number on the bonus level '
+                            '(shift key, and in the top 10 list)'),
         ('say points', '"points", said after your score'),
         ('say life', '"life", when 1 life is left (enter key)'),
         ('say lives', '"lives"'),
@@ -87,21 +87,27 @@ CLASSIC = [
         ('say you win', 'you beat the game'),
         ('say final score', '"final score", followed by your score'),
     ]),
+    ('bonus round', [
+        'The bonus level: once per game, after wave 4, meteors fall for 20 seconds.',
+        'On normal and insane it gives you an extra life at the end, without a sound.',
+    ], [
+        ('say bonus level', 'the bonus level is starting'),
+        ('ship99', 'meteor falling'),
+        ('enemy hit99', 'meteor die'),
+    ]),
     ('enemy', [
-        'Enemy ships, the meteors and the boss.',
+        'Enemy ships and the boss.',
         SHIP_NAMES,
     ], [
         ('ship1', 'varian falling'),
         ('ship2', 'zeneeth rising'),
-        ('ship3', 'tarster falling'),
-        ('ship4', 'star gazer falling'),
-        ('ship99', 'meteor falling (bonus level)'),
+        ('ship3', 'tarster falling (double hit)'),
+        ('ship4', 'star gazer falling (jumping)'),
         ('boss drop', 'boss falling (levels 4, 8 and 12)'),
         ('enemy hit1', 'varian die'),
         ('enemy hit2', 'zeneeth die'),
         ('enemy hit3', 'tarster die'),
         ('enemy hit4', 'star gazer die'),
-        ('enemy hit99', 'meteor die'),
         ('boss hit', 'boss knocked off the screen (it comes back until you beat it)'),
         ('not dead', 'enemy or boss hit, but not destroyed yet'),
         ('land', 'an enemy landed on your base'),
@@ -120,6 +126,7 @@ CLASSIC = [
     ]),
     ('item', [
         'Special items: shoot them as they fall, then use them.',
+        'Voice: when you get it or pick it',
     ], [
         ('item drop', 'an item falling'),
         ('item centered', 'beep: an item is in your line of fire'),
@@ -129,7 +136,7 @@ CLASSIC = [
         ('super laser', 'super laser shot'),
         ('smart bomb', 'smart bomb blast'),
         ('portal', 'portal used, warps you to the next or previous level'),
-        ('say super laser', 'voice: super laser (when you get it or pick it)'),
+        ('say super laser', 'voice: super laser'),
         ('say smart bomb', 'voice: smart bomb'),
         ('say portal', 'voice: portal'),
     ]),
@@ -207,8 +214,8 @@ CLASSIC = [
     ('number', [
         'Spoken numbers for the score, wave, lives and landed ships.',
     ], NUMBERS),
-    ('scenes', [
-        'Scenes: the tunes that play outside of gameplay, when a game starts, between levels, and when it ends.',
+    ('scene', [
+        'The tunes that play outside of gameplay, when a game starts, between levels, and when it ends.',
         'They are MIDI files. A key press skips the intro after 2 seconds, and you win and game over',
         'after 5. The intermissions before levels 5 and 9 cannot be skipped, and play to the end.',
     ], [
@@ -233,6 +240,8 @@ TR20 = [
     ('announcement', [
         'Spoken game information. The numbers come from the number folder.',
     ], [
+        ('life alarm', 'one more landing will destroy your base'),
+        ('warn gorb', 'a gorbian level is starting'),
         ('say wave', '"wave", followed by the wave number (shift key, and between levels)'),
         ('say bonus round', '"bonus round", said instead of the wave number on a bonus round'),
         ('say points', '"points", said after your score'),
@@ -240,7 +249,6 @@ TR20 = [
         ('say lives', '"lives"'),
         ('say ship landed', '"ship landed", when 1 ship has landed (enter key)'),
         ('say ships landed', '"ships landed"'),
-        ('extra life', 'you got an extra life'),
         ('reverse', 'insane only: the left and right arrows are swapped, or back to normal'),
         ('say game over', 'game over'),
         ('say you win', 'you beat the game'),
@@ -261,6 +269,7 @@ TR20 = [
         ('barrage2', 'end of the intro on easy: the prize is a special item'),
         ('barrage3', 'end of the intro on normal and insane: the prize is an extra life'),
         ('set complete', 'you finished a set of ships; the next set number is spoken after it'),
+        ('extra life', 'you got an extra life: for landing safely, or as the ship barrage prize'),
         ('say meteorite level', 'the meteorite round is starting'),
         ('ship0', 'meteor falling'),
         ('meteor hit', 'meteor die'),
@@ -296,16 +305,13 @@ TR20 = [
         ('hyperbounce', 'you hit the edge with hyperactive sides on and bounced somewhere else'),
         ('warn center', 'center beep: you passed the middle of the screen (the L key turns it on or off)'),
         ('locate', 'shows where you are on the board (insert key)'),
-        ('life alarm', 'one more landing will destroy your base'),
         ('user dies', 'your base is destroyed, you lose a life'),
         ('next level', 'warp to the next level'),
         ('prior level', 'warp back to the previous level (portal)'),
-        ('confirm exit', 'escape pressed during a game: enter quits, any other key keeps playing'),
     ]),
-    ('gorb', [
+    ('gorbian', [
         'Gorbian ships. On gorbian levels you move a target: left and right to line up, then up and down to aim.',
     ], [
-        ('warn gorb', 'a gorbian level is starting'),
         ('gorb1', 'gorbian cruiser falling'),
         ('gorb2', 'gorbian pod rising'),
         ('gorb3', 'gorbian infiltrator falling'),
@@ -319,6 +325,7 @@ TR20 = [
     ]),
     ('item', [
         'Special items: shoot them as they fall, then use them (page up and page down, or the number keys).',
+        'Voice: when you get it, pick it, or list your items with I.',
     ], [
         ('item drop', 'an item falling'),
         ('item centered', 'beep: an item is in your line of fire'),
@@ -333,7 +340,7 @@ TR20 = [
         ('shield', 'moon rock shield turned on'),
         ('shield active', 'moon rock shield running'),
         ('reinforcer', 'base reinforced: more ships can land before you lose a life'),
-        ('say super laser', 'voice: super laser (when you get it, pick it, or list your items with I)'),
+        ('say super laser', 'voice: super laser'),
         ('say smart bomb', 'voice: smart bomb'),
         ('say portal', 'voice: portal'),
         ('say nuke', 'voice: ground nuke'),
@@ -450,6 +457,7 @@ TR20 = [
         ('off', 'off'),
         ('sound arrows', 'learn sounds menu help'),
         ('score arrows', 'top 10 list help'),
+        ('confirm exit', 'escape pressed during a game: enter quits, any other key keeps playing'),
         ('say normal board', 'hidden: control+B in the main menu, normal board width'),
         ('say wider board', 'hidden: wider board'),
         ('say widest board', 'hidden: widest board'),
@@ -484,8 +492,8 @@ TR20 = [
     ('number', [
         'Spoken numbers for the score, wave, lives, landed ships and item counts.',
     ], NUMBERS),
-    ('scenes', [
-        'Scenes: the sounds that play outside of gameplay, when a game starts and between levels.',
+    ('scene', [
+        'The sounds that play outside of gameplay, when a game starts and between levels.',
         'A key press skips any of them after 2 seconds. There is no you win or game over tune: when you',
         'beat the game you hear Lord Vector\'s ship destroyed (lord vector folder), then the spoken "you win".',
     ], [
@@ -496,7 +504,15 @@ TR20 = [
     ]),
     SCORES_ONLINE,
     TEST_SPEAKERS,
-    WARNING,
+    ('warning', [
+        'Error and warning messages.',
+        "Sounds that are unencrypted are not a part of the tr20.bsc file, "
+        "they are exposed in the game's directory.",
+    ], [
+        ('say fatal', 'fatal error at startup (DirectX could not start), unencrypted'),
+        ('say config first', 'run the configuration program first'),
+        ('register', 'this part needs the registered version, unencrypted'),
+    ]),
 ]
 
 
@@ -520,8 +536,15 @@ SP16 = _with(CLASSIC, 'number', header=[
     ('and', '"y" (and), as in treinta y cinco'),
 ], drop=['hundred'])
 
+# Classic Troopanum is the re-release of 1.6: the same code, with the sounds packed in cltr02.bsc.
+# 1.5, 1.6 and SP 1.6 have no archive, so only Classic Troopanum's scene folder mentions it.
+CLASSIC_RE = _with(CLASSIC, 'scene', header=[
+    "All sounds here are unencrypted. They are a part of the cltr02.bsc file, "
+    "but they are also exposed in the game's directory.",
+])
+
 LAYOUTS = {
-    'Classic Troopanum': CLASSIC,
+    'Classic Troopanum': CLASSIC_RE,
     'Troopanum 1.5': CLASSIC,
     'Troopanum 1.6': CLASSIC,
     'Troopanum SP 1.6': SP16,
